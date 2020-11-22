@@ -35,8 +35,10 @@ public class Listeners implements Listener {
     @EventHandler
     public void onClick(PlayerInteractEvent e) {
         if(e.getHand()!= EquipmentSlot.HAND)return;
+        if (e.getItem() == null) return;
 
-        if (e.getItem() != null && e.getMaterial() == Material.STICK) { // ----------------------------------------------Sort Heal
+
+        if (e.getMaterial() == Material.STICK) { // ----------------------------------------------Sort Heal
             Location p_loc = e.getPlayer().getLocation();
             if (e.getPlayer().getHealth() == 20) {
                     e.getPlayer().sendMessage("Vous êtes déja en pleine forme !");
@@ -53,14 +55,14 @@ public class Listeners implements Listener {
         }
 
 
-        if (e.getItem() != null && e.getMaterial() == Material.SPECTRAL_ARROW) { //--------------------------------------sort Fireball
+        if (e.getMaterial() == Material.SPECTRAL_ARROW) { //--------------------------------------sort Fireball
             Location p_loc = e.getPlayer().getLocation();
             e.getPlayer().playSound(p_loc, Sound.ITEM_FIRECHARGE_USE, (float)1.0, (float)1.0);
             e.getPlayer().launchProjectile(Fireball.class);
         }
 
 
-        if (e.getItem() != null && e.getMaterial() == Material.GLOWSTONE_DUST) { //--------------------------------------sort Glide
+        if (e.getMaterial() == Material.GLOWSTONE_DUST) { //--------------------------------------sort Glide
             if (p_gld){
                 e.getPlayer().sendMessage("Tu voles déja!");
             } else {

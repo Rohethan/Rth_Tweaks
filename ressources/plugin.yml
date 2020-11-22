@@ -1,6 +1,6 @@
-name: spells
+name: FacTools
 main: fr.rohethan.Main
-version: testing
+version: viens_manger_des_frites_avec_moi_narcos
 api-version: "1.16"
 commands:
   testcmd:
