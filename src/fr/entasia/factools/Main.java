@@ -1,6 +1,6 @@
-package fr.rohethan;
+package fr.entasia.factools;
 
-import fr.rohethan.listeners.Spells;
+import fr.entasia.factools.listeners.Spells;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {

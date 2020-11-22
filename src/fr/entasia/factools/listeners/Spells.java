@@ -1,12 +1,10 @@
-package fr.rohethan.listeners;
+package fr.entasia.factools.listeners;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import fr.rohethan.Main;
+import fr.entasia.factools.Main;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,9 +15,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-
-import java.util.HashMap;
-import java.util.UUID;
 
 
 public class Spells implements Listener {
