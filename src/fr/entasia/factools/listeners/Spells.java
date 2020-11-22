@@ -34,8 +34,9 @@ public class Spells implements Listener {
     @EventHandler
     public void onClick(PlayerInteractEvent e) {
         if (e.getHand() != EquipmentSlot.HAND) return;
+        if(e.getItem() == null)return;
 
-        if (e.getItem() != null && e.getMaterial() == Material.STICK) { // ----------------------------------------------Sort Heal
+        if (e.getMaterial() == Material.STICK) { // ----------------------------------------------Sort Heal
             Location p_loc = e.getPlayer().getLocation();
             if (e.getPlayer().getHealth() == 20) {
                 e.getPlayer().sendMessage("Vous êtes déja en pleine forme !");
@@ -49,11 +50,11 @@ public class Spells implements Listener {
                 e.getPlayer().spawnParticle(Particle.TOTEM, p_loc, 250, 0.0, 1.0, 0.0, 0.25);
                 e.getPlayer().playSound(p_loc, Sound.BLOCK_BEACON_POWER_SELECT, (float) 1.0, (float) 1.5);
             }
-        }else if (e.getItem() != null && e.getMaterial() == Material.SPECTRAL_ARROW) { //--------------------------------------sort Fireball
+        }else if (e.getMaterial() == Material.SPECTRAL_ARROW) { //--------------------------------------sort Fireball
             Location p_loc = e.getPlayer().getLocation();
             e.getPlayer().playSound(p_loc, Sound.ITEM_FIRECHARGE_USE, (float)1.0, (float)1.0);
             e.getPlayer().launchProjectile(Fireball.class);
-        }else if (e.getItem() != null && e.getMaterial() == Material.GLOWSTONE_DUST) { //--------------------------------------sort Glide
+        }else if (e.getMaterial() == Material.GLOWSTONE_DUST) { //--------------------------------------sort Glide
             if (e.getPlayer().hasMetadata("glide")){
                 e.getPlayer().sendMessage("Tu voles déja!");
             } else {
