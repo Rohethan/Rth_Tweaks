@@ -22,12 +22,16 @@ public class Spells implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onEntityToggleGlideEvent(EntityToggleGlideEvent e) {
         if (e.getEntity() instanceof Player && e.getEntity().hasMetadata("glide")) {
-            if (e.isGliding()) {
+
+            if (!e.isGliding() && !e.getEntity().isOnGround()) {
                 e.setCancelled(true);
             } else {
+
                 e.getEntity().removeMetadata("glide", Main.main);
+
             }
         }
+
     }
 
 
