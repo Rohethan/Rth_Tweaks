@@ -1,5 +1,5 @@
 name: FacTools
-main: fr.rohethan.Main
+main: fr.entasia.factools
 version: viens_manger_des_frites_avec_moi_narcos
 api-version: "1.16"
 commands:
