@@ -3,4 +3,6 @@ main: fr.entasia.factools.Main
 version: viens_manger_des_frites_avec_moi_narcos
 api-version: "1.16"
 commands:
-  testcmd:
+  s_glide:
+  s_fireball:
+  s_heal:

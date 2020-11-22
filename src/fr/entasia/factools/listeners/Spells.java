@@ -40,7 +40,7 @@ public class Spells implements Listener {
         if (e.getHand() != EquipmentSlot.HAND) return;
         if(e.getItem() == null)return;
 
-        if (e.getMaterial() == Material.STICK) { // ----------------------------------------------Sort Heal
+        if (e.getMaterial() == Material.STICK && e.getPlayer().hasMetadata("spellHeal")) { // ----------------------------------------------Sort Heal
             Location p_loc = e.getPlayer().getLocation();
             if (e.getPlayer().getHealth() == 20) {
                 e.getPlayer().sendMessage("Vous êtes déja en pleine forme !");
@@ -50,21 +50,22 @@ public class Spells implements Listener {
                     p_hlth = 20.0;
                 }
                 e.getPlayer().setHealth(p_hlth);
-                e.getPlayer().spawnParticle(Particle.SNEEZE, p_loc, 250, 0.0, 0.0, 0.0, 0.125);
-                e.getPlayer().spawnParticle(Particle.TOTEM, p_loc, 250, 0.0, 1.0, 0.0, 0.25);
-                e.getPlayer().playSound(p_loc, Sound.BLOCK_BEACON_POWER_SELECT, (float) 1.0, (float) 1.5);
+                e.getPlayer().getWorld().spawnParticle(Particle.SNEEZE, p_loc, 250, 0.0, 0.0, 0.0, 0.125);
+                e.getPlayer().getWorld().spawnParticle(Particle.TOTEM, p_loc, 250, 0.0, 1.0, 0.0, 0.25);
+                e.getPlayer().getWorld().playSound(p_loc, Sound.BLOCK_BEACON_POWER_SELECT, (float) 1.0, (float) 1.5);
             }
-        }else if (e.getMaterial() == Material.SPECTRAL_ARROW) { //--------------------------------------sort Fireball
+        }else if (e.getMaterial() == Material.STICK && e.getPlayer().hasMetadata("spellFireball")) { //--------------------------------------sort Fireball
             Location p_loc = e.getPlayer().getLocation();
-            e.getPlayer().playSound(p_loc, Sound.ITEM_FIRECHARGE_USE, (float)1.0, (float)1.0);
+            e.getPlayer().getWorld().playSound(p_loc, Sound.ITEM_FIRECHARGE_USE, (float)1.0, (float)1.0);
             e.getPlayer().launchProjectile(Fireball.class);
-        }else if (e.getMaterial() == Material.GLOWSTONE_DUST) { //--------------------------------------sort Glide
+        }else if (e.getMaterial() == Material.STICK && e.getPlayer().hasMetadata("spellGlide")) { //--------------------------------------sort Gli.. HUM, fly pardon
             if (e.getPlayer().hasMetadata("glide")){
                 e.getPlayer().sendMessage("Tu voles déja!");
             } else {
                 e.getPlayer().setMetadata("glide", new FixedMetadataValue(Main.main, true));
                 Location p_loc = e.getPlayer().getLocation();
-                e.getPlayer().spawnParticle(Particle.SMOKE_LARGE, p_loc,250, 0.0,0.0,0.0, 0.125);
+                e.getPlayer().getWorld().playSound(p_loc, Sound.ENTITY_BAT_TAKEOFF, (float) 1.0, (float) 1.5);
+                e.getPlayer().getWorld().spawnParticle(Particle.SMOKE_LARGE, p_loc,250, 0.0,0.0,0.0, 0.125);
                 new BukkitRunnable() {
                     public void run() {
                         e.getPlayer().setVelocity(new Vector(0, 1.0, 0));
