@@ -1,7 +1,6 @@
 package fr.entasia.factools.listeners;
-
-import com.destroystokyo.paper.event.entity.EntityJumpEvent;
 import fr.entasia.factools.Main;
+import fr.entasia.factools.SpellTools;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -52,8 +51,12 @@ public class Spells implements Listener {
     public void onClick(PlayerInteractEvent e) {
         if (e.getHand() != EquipmentSlot.HAND) return;
         if(e.getMaterial()==Material.STICK){
+            Player p = e.getPlayer();
 
-          if (e.getPlayer().hasMetadata("spellHeal")) { // ----------------------------------------------Sort Heal
+          SpellTools sp = SpellTools.getCurrentSpell(p);
+          if(sp==null)return;
+
+          if (sp== SpellTools.HEAL) { // ----------------------------------------------Sort Heal
               Location p_loc = e.getPlayer().getLocation();
               if (e.getPlayer().getHealth() == 20) {
                   e.getPlayer().sendMessage("Vous êtes déja en pleine forme !");
@@ -67,11 +70,11 @@ public class Spells implements Listener {
                   e.getPlayer().getWorld().spawnParticle(Particle.TOTEM, p_loc, 250, 0.0, 1.0, 0.0, 0.25);
                   e.getPlayer().getWorld().playSound(p_loc, Sound.BLOCK_BEACON_POWER_SELECT, (float) 1.0, (float) 1.5);
               }
-          }else if (e.getPlayer().hasMetadata("spellFireball")) { //--------------------------------------sort Fireball
+          }else if (sp== SpellTools.FIREBALL) { //--------------------------------------sort Fireball
               Location p_loc = e.getPlayer().getLocation();
               e.getPlayer().getWorld().playSound(p_loc, Sound.ITEM_FIRECHARGE_USE, (float)1.0, (float)1.0);
               e.getPlayer().launchProjectile(Fireball.class);
-          }else if (e.getPlayer().hasMetadata("spellGlide")) { //--------------------------------------sort Gli.. HUM, fly pardon
+          }else if (sp== SpellTools.FLY) { //--------------------------------------sort Gli.. HUM, fly pardon  hehe boi
               if (e.getPlayer().hasMetadata("glide")){
                   e.getPlayer().sendMessage("Tu voles déja!");
               } else {
@@ -90,7 +93,7 @@ public class Spells implements Listener {
                       }
                   }.runTaskLater(Main.main, 16);
               }
-          }else if (e.getPlayer().hasMetadata("spellFroze")) { //-------------------------------------sort Froze (gel)
+          }else if (sp== SpellTools.FROZE) { //-------------------------------------sort Froze (gel)
               Location p_loc = e.getPlayer().getLocation();
               Entity target = e.getPlayer().getTargetEntity(6);
               e.getPlayer().setJumping(false);
@@ -101,7 +104,7 @@ public class Spells implements Listener {
               }else{
                   e.getPlayer().sendMessage("§cVise un joueur espèce de bigleux");
               }
-          } else if (e.getPlayer().hasMetadata("spellMeteor")) { //----------------------------------sort Meteor
+          } else if (sp== SpellTools.METEOR) { //----------------------------------sort Meteor
               Location p_loc = e.getPlayer().getLocation();
               p_loc.setY(255.0);
               e.getPlayer().getWorld().spawnEntity(p_loc, EntityType.FIREBALL).setRotation((float)0.0,(float)90.0);
