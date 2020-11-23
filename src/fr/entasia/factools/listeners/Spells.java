@@ -1,18 +1,20 @@
 package fr.entasia.factools.listeners;
 
+import com.destroystokyo.paper.event.entity.EntityJumpEvent;
 import fr.entasia.factools.Main;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -32,6 +34,13 @@ public class Spells implements Listener {
             }
         }
 
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerJump(PlayerMoveEvent e) {
+        if (e.getPlayer().hasMetadata("tkeblo")) {
+            e.setCancelled(true);
+        }
     }
 
 
@@ -76,6 +85,28 @@ public class Spells implements Listener {
                         e.getPlayer().setGliding(true);
                     }
                 }.runTaskLater(Main.main, 16);
+            }
+        }else if (e.getMaterial() == Material.STICK && e.getPlayer().hasMetadata("spellFroze")) { //-------------------------------------sort Froze (gel)
+            Location p_loc = e.getPlayer().getLocation();
+            Entity target = e.getPlayer().getTargetEntity(6);
+            e.getPlayer().setJumping(false);
+            if(target instanceof Player){
+                new BukkitRunnable() {
+                    public void run() {
+                        target.setMetadata("tkeblo", new FixedMetadataValue(Main.main, true));
+                    }
+                }.runTask(Main.main);
+                ((Player) target).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 255 ));
+
+                new BukkitRunnable() {
+                    public void run() {
+                        target.removeMetadata("tkeblo",Main.main);
+                    }
+                }.runTaskLater(Main.main, 100);
+
+                e.getPlayer().getWorld().playSound(p_loc, Sound.BLOCK_GLASS_BREAK, (float) 1.0, (float) 1.0);
+            }else{
+                e.getPlayer().sendMessage("§cVise un joueur espèce de bigleux");
             }
         }
     }

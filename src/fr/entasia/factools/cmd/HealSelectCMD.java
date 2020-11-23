@@ -28,6 +28,10 @@ public class HealSelectCMD implements CommandExecutor {
         if (p.hasMetadata("spellFireball")) {
             p.removeMetadata("spellFireball",Main.main);
         }
+        if (p.hasMetadata("spellFroze")) {
+            p.removeMetadata("spellFroze",Main.main);
+        }
+
         return true;
     }
 }
