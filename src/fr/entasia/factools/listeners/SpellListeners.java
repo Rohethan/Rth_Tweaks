@@ -8,10 +8,12 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -54,6 +56,21 @@ public class SpellListeners implements Listener {
     @EventHandler
     public void onClick(PlayerInteractEvent e) {
         if (e.getHand() != EquipmentSlot.HAND) return;
+        if (e.getMaterial()==Material.STICK) {
+            if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
+
+                // trouver le moyen de switcher de sort ---> incrementer pour pouvoir scroll a travers en cliquant a repetition
+
+                int nextspell = Spell.getCurrentSpell(e.getPlayer()).id;
+                nextspell ++;
+                if (nextspell == 5)nextspell = 0;
+                Spell.setCurrentSpell(e.getPlayer(), nextspell);
+                e.getPlayer().sendActionBar(String.format("Spell : %s", Spell.getCurrentSpell(e.getPlayer())));
+                return;
+            }
+        }
+
+
         if(e.getMaterial()==Material.STICK){
             Player p = e.getPlayer();
 
@@ -109,26 +126,54 @@ public class SpellListeners implements Listener {
                     e.getPlayer().sendMessage("§cVise un joueur espèce de bigleux");
                 }
             } else if (sp== Spell.METEOR) { //----------------------------------sort Meteor
-
                 Block b = p.getTargetBlock(50);
-                if(b==null){
-                    p.sendMessage("§cRegarde un block !");
+                if (b==null||b.getType()==Material.AIR) {
+                    p.sendMessage("Regarde un bloc");
                     return;
                 }
-                Location loc;
-                for(int i=0;i<1;i++){
-                    loc = b.getLocation();
-                    loc.setY(loc.getY()+50);
-                    if(loc.getY()>255)loc.setY(255);
-                    loc.setX(loc.getX()+Main.r.nextInt(20)-10);
-                    loc.setZ(loc.getZ()+Main.r.nextInt(20)-10);
+                Location targetLoc = b.getLocation();
 
-                    Vector v = new Vector(Main.r.nextDouble()*2-1, -1, Main.r.nextDouble()*2-1);
-                    Fireball fb = loc.getWorld().spawn(loc, Fireball.class);
-                    fb.setVelocity(v);
-                    fb.setDirection(new Vector(0, 0, 0));
-                }
+                Location pLoc = p.getLocation();
+                pLoc.setY(255);
 
+                Vector goto_target = targetLoc.toVector().subtract(pLoc.toVector());
+
+                Fireball fb = p.getWorld().spawn(pLoc, Fireball.class);
+                fb.setDirection(goto_target);
+
+
+
+/*
+		Entity ent = p.getWorld().spawnEntity(p.getLocation().add(new Vector(0, 50, 0)), EntityType.FIREBALL);
+		ent.setVelocity(new Vector(0.1, -0.5, 0));
+ */
+
+
+                //Block b = p.getTargetBlock(50);
+                //if(b==null){
+                //    p.sendMessage("§cRegarde un block !");
+                //    return;
+                //}
+                //Location loc;
+                //for(int i=0;i<1;i++){
+                //    loc = b.getLocation();
+                //   loc.setY(loc.getY()+50);
+                //    if(loc.getY()>255)loc.setY(255);
+                //    loc.setX(loc.getX()+Main.r.nextInt(10)-5);
+                //    loc.setZ(loc.getZ()+Main.r.nextInt(10)-5);
+
+                //    Vector v = new Vector(Main.r.nextDouble()*2-1, -1, Main.r.nextDouble()*2-1);
+                //    Fireball fb = loc.getWorld().spawn(loc, Fireball.class);
+//              //      fb.setVelocity(v);
+                //    fb.setDirection(new Vector(0, 0, 0));
+                //     fb.setRotation(0, 0);
+                //    fb.setVelocity(new Vector(0, 0, 0));
+
+                    //           } else if (sp== SpellTools.METEOR) { //----------------------------------sort Meteor
+                    //              Location p_loc = e.getPlayer().getLocation();
+                    //              p_loc.setY(255.0);
+                    //              e.getPlayer().getWorld().spawnEntity(p_loc, EntityType.FIREBALL).setRotation((float)0.0,(float)90.0);
+//                }
             }
         }
     }

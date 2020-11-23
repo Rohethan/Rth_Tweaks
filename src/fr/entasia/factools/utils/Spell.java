@@ -35,8 +35,12 @@ public enum Spell {
   }
 
   public static void setCurrentSpell(Player p, Spell sp) {
+    setCurrentSpell(p, sp.id);
+  }
+
+  public static void setCurrentSpell(Player p, int id) {
     p.removeMetadata("spell", Main.main);
-    p.setMetadata("spell", new FixedMetadataValue(Main.main, sp.id));
+    p.setMetadata("spell", new FixedMetadataValue(Main.main, id));
   }
 
   public static void removeCurrentSpell(Player p) {
