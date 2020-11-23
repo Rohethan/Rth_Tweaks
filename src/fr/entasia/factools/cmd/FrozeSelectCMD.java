@@ -32,6 +32,9 @@ public class FrozeSelectCMD implements CommandExecutor {
 		if (p.hasMetadata("spellHeal")) {
 			p.removeMetadata("spellHeal",Main.main);
 		}
+		if (p.hasMetadata("spellMeteor")) {
+			p.removeMetadata("spellMeteor", Main.main);
+		}
 
 		return true;
 	}

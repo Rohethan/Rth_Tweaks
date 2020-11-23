@@ -31,6 +31,10 @@ public class FireballSelectCMD implements CommandExecutor {
         if (p.hasMetadata("spellFroze")) {
             p.removeMetadata("spellFroze",Main.main);
         }
+        if (p.hasMetadata("spellMeteor")) {
+            p.removeMetadata("spellMeteor", Main.main);
+        }
+
 
         return true;
     }
