@@ -1,12 +1,16 @@
 package fr.entasia.factools;
 
-import fr.entasia.factools.cmd.*;
-import fr.entasia.factools.listeners.Spells;
+import fr.entasia.factools.cmd.GiveWandCMD;
+import fr.entasia.factools.cmd.SpellSelectCMD;
+import fr.entasia.factools.listeners.SpellListeners;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Random;
 
 public class Main extends JavaPlugin {
 
     public static Main main;
+    public static Random r = new Random();
 
     @Override
     public void onEnable() {
@@ -15,8 +19,9 @@ public class Main extends JavaPlugin {
             getLogger().info("Activation du plugin...");
 
             getLogger().info("Activation des spells");
-            getServer().getPluginManager().registerEvents(new Spells(), this);
+            getServer().getPluginManager().registerEvents(new SpellListeners(), this);
             getCommand("spell").setExecutor(new SpellSelectCMD());
+            getCommand("givewand").setExecutor(new GiveWandCMD());
 
             getLogger().info("Plugin FacTools activé !");
         }catch(Throwable t){

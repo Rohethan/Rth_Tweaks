@@ -1,6 +1,8 @@
 name: FacTools
 main: fr.entasia.factools.Main
-version: viens_manger_des_frites_avec_moi_narcos
+version: -1
 api-version: "1.16"
 commands:
   spell:
+    aliases: [spells, sort, sorts]
+  givewand:

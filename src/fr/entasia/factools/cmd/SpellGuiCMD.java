@@ -8,7 +8,8 @@ import org.bukkit.command.CommandSender;
 public class SpellGuiCMD implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
+
         return true;
     }
 }

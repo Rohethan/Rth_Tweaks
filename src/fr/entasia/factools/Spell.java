@@ -6,7 +6,7 @@ import org.bukkit.metadata.MetadataValue;
 
 import java.util.List;
 
-public enum SpellTools {
+public enum Spell {
   HEAL(0),
   FLY(1),
   METEOR(2),
@@ -15,25 +15,25 @@ public enum SpellTools {
 
   public int id;
 
-  SpellTools(int id) {
+  Spell(int id) {
     this.id = id;
   }
 
-  public static SpellTools get(int id) {
-    for (SpellTools sp : values()) {
+  public static Spell get(int id) {
+    for (Spell sp : values()) {
       if (sp.id == id) return sp;
     }
     return null;
   }
 
-  public static SpellTools getCurrentSpell(Player p) {
+  public static Spell getCurrentSpell(Player p) {
     List<MetadataValue> list = p.getMetadata("spell");
     if (list.size() == 0) return null;
     int id = list.get(0).asInt();
     return get(id);
   }
 
-  public static void setCurrentSpell(Player p, SpellTools sp) {
+  public static void setCurrentSpell(Player p, Spell sp) {
     p.removeMetadata("spell", Main.main);
     p.setMetadata("spell", new FixedMetadataValue(Main.main, sp.id));
   }
