@@ -1,9 +1,6 @@
 package fr.entasia.factools.cmd;
 
 import fr.entasia.factools.utils.Spell;
-import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,9 +21,6 @@ public class SpellSelectCMD implements CommandExecutor {
                 try {
                     Spell sp = Spell.valueOf(args[0].toUpperCase()); // throw IllegalArgumentException if not a valid spell
                     Spell.setCurrentSpell(p, sp);
-                    Location p_loc = p.getLocation();
-                    p.getWorld().playSound(p_loc, Sound.UI_TOAST_IN, 1, (float) 1.5);
-                    p.getWorld().spawnParticle(Particle.SOUL, p_loc, 100, 0.0, 0.0, 0.0, 0.025);
                     p.sendMessage("§aTu as choisi le sort "+sp.name()+" !");
                 } catch (IllegalArgumentException e) {
                     p.sendMessage("§cCe spell n'existe pas !");

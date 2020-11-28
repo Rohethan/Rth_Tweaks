@@ -1,5 +1,6 @@
 package fr.entasia.factools.listeners;
 
+import fr.entasia.apis.utils.ItemUtils;
 import fr.entasia.factools.Main;
 import fr.entasia.factools.utils.Spell;
 import org.bukkit.Location;
@@ -8,7 +9,6 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,10 +23,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-
-//--- Emplacement afk floobits -----
-// :-)
-// ---------------------------------
 
 public class SpellListeners implements Listener {
 
@@ -56,29 +52,19 @@ public class SpellListeners implements Listener {
     @EventHandler
     public void onClick(PlayerInteractEvent e) {
         if (e.getHand() != EquipmentSlot.HAND) return;
-        if (e.getMaterial() == Material.STICK) {
+        if (ItemUtils.is(e.getItem(), Material.STICK, "§5Baguette Magique")) {
             if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
 
-                // trouver le moyen de switcher de sort ---> incrementer pour pouvoir scroll a travers en cliquant a repetition
-                try {
-                    int nextspell = Spell.getCurrentSpell(e.getPlayer()).id;
-                    nextspell++;
+                Spell sp = Spell.getCurrentSpell(e.getPlayer());
+                int nextspell;
+                if (sp == null) nextspell = 0;
+                else {
+                    nextspell = sp.id + 1;
                     if (nextspell == 5) nextspell = 0;
-                    Spell.setCurrentSpell(e.getPlayer(), nextspell);
-                    e.getPlayer().sendActionBar(String.format("Spell : %s", Spell.getCurrentSpell(e.getPlayer())));
-                    e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.UI_TOAST_IN, 1, (float) 1.5);
-                    e.getPlayer().getWorld().spawnParticle(Particle.SOUL, e.getPlayer().getLocation(), 100, 0.0, 0.0, 0.0, 0.025);
-                    return;
-                } catch (NullPointerException pas_sort_detect) {
-                    System.out.println("Utilisation NPE-truc-exploit");
-                    Spell.setCurrentSpell(e.getPlayer(), 0);
-                    e.getPlayer().sendActionBar(String.format("Spell : %s", Spell.getCurrentSpell(e.getPlayer())));
                 }
+                Spell.setCurrentSpell(e.getPlayer(), nextspell);
+                e.getPlayer().sendActionBar(String.format("Spell : %s", Spell.getCurrentSpell(e.getPlayer())));
             } else {
-                //}
-
-
-                //if(e.getMaterial()==Material.STICK){
                 Player p = e.getPlayer();
 
                 Spell sp = Spell.getCurrentSpell(p);
@@ -135,7 +121,7 @@ public class SpellListeners implements Listener {
                 } else if (sp == Spell.METEOR) { //----------------------------------sort Meteor
                     Block b = p.getTargetBlock(50);
                     if (b == null || b.getType() == Material.AIR) {
-                        p.sendMessage("Regarde un bloc");
+                        p.sendMessage("§cRegarde un bloc");
                         return;
                     }
                     Location targetLoc = b.getLocation();
@@ -148,39 +134,12 @@ public class SpellListeners implements Listener {
                     Fireball fb = p.getWorld().spawn(pLoc, Fireball.class);
                     fb.setDirection(goto_target);
 
-
-
-/*
-		Entity ent = p.getWorld().spawnEntity(p.getLocation().add(new Vector(0, 50, 0)), EntityType.FIREBALL);
-		ent.setVelocity(new Vector(0.1, -0.5, 0));
- */
-
-
-                    //Block b = p.getTargetBlock(50);
-                    //if(b==null){
-                    //    p.sendMessage("§cRegarde un block !");
-                    //    return;
-                    //}
-                    //Location loc;
-                    //for(int i=0;i<1;i++){
-                    //    loc = b.getLocation();
-                    //   loc.setY(loc.getY()+50);
-                    //    if(loc.getY()>255)loc.setY(255);
-                    //    loc.setX(loc.getX()+Main.r.nextInt(10)-5);
-                    //    loc.setZ(loc.getZ()+Main.r.nextInt(10)-5);
-
-                    //    Vector v = new Vector(Main.r.nextDouble()*2-1, -1, Main.r.nextDouble()*2-1);
-                    //    Fireball fb = loc.getWorld().spawn(loc, Fireball.class);
-//              //      fb.setVelocity(v);
-                    //    fb.setDirection(new Vector(0, 0, 0));
-                    //     fb.setRotation(0, 0);
-                    //    fb.setVelocity(new Vector(0, 0, 0));
-
-                    //           } else if (sp== SpellTools.METEOR) { //----------------------------------sort Meteor
-                    //              Location p_loc = e.getPlayer().getLocation();
-                    //              p_loc.setY(255.0);
-                    //              e.getPlayer().getWorld().spawnEntity(p_loc, EntityType.FIREBALL).setRotation((float)0.0,(float)90.0);
-//                }
+                } else if (sp == Spell.SPEED) { //----------------------------------------Spell speed
+                    if(e.getPlayer().hasPotionEffect(PotionEffectType.SPEED)){
+                        e.getPlayer().sendMessage("Tu as déjà un effet de speed !");
+                    }else{
+                        e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 5));
+                    }
                 }
             }
         }
