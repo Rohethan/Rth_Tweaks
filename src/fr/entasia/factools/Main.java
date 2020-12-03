@@ -1,6 +1,7 @@
 package fr.entasia.factools;
 
 import fr.entasia.factools.cmd.GiveWandCMD;
+import fr.entasia.factools.cmd.ManaCMD;
 import fr.entasia.factools.cmd.SpellSelectCMD;
 import fr.entasia.factools.listeners.SpellListeners;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,6 +23,7 @@ public class Main extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new SpellListeners(), this);
             getCommand("spell").setExecutor(new SpellSelectCMD());
             getCommand("givewand").setExecutor(new GiveWandCMD());
+            getCommand("mana").setExecutor(new ManaCMD());
 
             getLogger().info("Plugin FacTools activé !");
         }catch(Throwable t){

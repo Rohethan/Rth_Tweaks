@@ -6,3 +6,4 @@ commands:
   spell:
     aliases: [spells, sort, sorts]
   givewand:
+  mana:
