@@ -12,14 +12,22 @@ public class ManaCMD implements CommandExecutor {
 
         if (!(sender instanceof Player)) return true;
 
-        if (strings[0] == "set") {
+        if (strings[0].equalsIgnoreCase("set")) {
             Player p = ((Player) sender).getPlayer();
-            Mana.setMana(p, Integer.parseInt(strings[1]));
+            Mana.setMana(p, Mana.getMana(p)+100);
+            p.sendMessage("+100 mana ajoutés.");
         }
 
-        if (strings[0] == "get") {
+        if (strings[0].equalsIgnoreCase("get")) {
             Player p = ((Player) sender).getPlayer();
-            p.sendMessage(Integer.toString(Mana.getMana(p)));
+            String mana_amount = Integer.toString(Mana.getMana(p));
+            p.sendMessage(mana_amount);
+        }
+
+        if (strings[0].equalsIgnoreCase("clear")) {
+            Player p = ((Player) sender).getPlayer();
+            Mana.setMana(p,0);
+            p.sendMessage("Poof, plus de mana");
         }
 
         return true;

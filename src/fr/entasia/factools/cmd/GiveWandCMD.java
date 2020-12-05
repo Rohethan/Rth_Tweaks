@@ -13,11 +13,11 @@ public class GiveWandCMD implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if (!(sender instanceof Player)) return true;
         if (sender.hasPermission("factions.givewandcmd")) {
-            ItemStack wand = new ItemBuilder(Material.STICK).fakeEnchant().name("Baguette Magique").lore("Une baguette multifonctions").build();
+            ItemStack wand = new ItemBuilder(Material.STICK).fakeEnchant().name("§5Baguette Magique").lore("Une baguette multifonctions").build();
             Player p = (Player) sender;
             p.getInventory().addItem(wand);
         } else {
-            sender.sendMessage("!cPas de perms, pas de baguette !");
+            sender.sendMessage("§cPas de perms, pas de baguette !");
         }
         return true;
     }

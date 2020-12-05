@@ -20,6 +20,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -27,7 +28,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 public class SpellListeners implements Listener {
-    /*
+
+
     @EventHandler
     public void doesPlayerHaveTheWAND(PlayerSwapHandItemsEvent e) {
         if (ItemUtils.is(e.getPlayer().getActiveItem(), Material.STICK,"§5Baguette Magique")) {
@@ -37,7 +39,7 @@ public class SpellListeners implements Listener {
 
     }
 
-     */
+
 
     @EventHandler(ignoreCancelled = true) // ---------------------------------------------- disable "no elytra, no glide" if spell glide used
     public void onEntityToggleGlideEvent(EntityToggleGlideEvent e) {
@@ -60,7 +62,8 @@ public class SpellListeners implements Listener {
     @EventHandler
     public void onClick(PlayerInteractEvent e) {
         if (e.getHand() != EquipmentSlot.HAND) return;
-        if (ItemUtils.is(e.getItem(), Material.STICK, "§5Baguette Magique")) {
+        if (ItemUtils.is(e.getItem(),Material.STICK,"§5Baguette Magique")) { // ItemUtils.is() ne fonctionne pas
+
 
             // ---------------- SpellSwitcher2000(tm)
             if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
@@ -69,7 +72,7 @@ public class SpellListeners implements Listener {
                 if (sp == null) nextspell = 0;
                 else {
                     nextspell = sp.id + 1;
-                    if (nextspell == 5) nextspell = 0;
+                    if (nextspell == 6) nextspell = 0;
                 }
                 Spell.setCurrentSpell(e.getPlayer(), nextspell);
                 e.getPlayer().sendActionBar(String.format("Spell : %s", Spell.getCurrentSpell(e.getPlayer())));
@@ -81,13 +84,11 @@ public class SpellListeners implements Listener {
                 if (sp == null) return; // nothing if player don't have equipped spell
 
                 if (sp == Spell.HEAL) { // ----------------------------------------------Spell Heal
-                    /*
-                    if (!(Mana.getMana(e.getPlayer()) <= 20)) {
+                    if (Mana.getMana(e.getPlayer()) < 20) {
                         e.getPlayer().sendMessage("§cPas assez de mana !");
                         return;
                     }
                     Mana.setMana(e.getPlayer(),(Mana.getMana(e.getPlayer()) - 20));
-                     */
 
                     Location p_loc = e.getPlayer().getLocation();
                     if (e.getPlayer().getHealth() == 20) {
@@ -105,16 +106,27 @@ public class SpellListeners implements Listener {
 
 
                 } else if (sp == Spell.FIREBALL) { //--------------------------------------sort Fireball
+                    System.out.println(Mana.getMana(p));
+                    if (Mana.getMana(e.getPlayer()) < 20) {
+                        e.getPlayer().sendMessage("§cPas assez de mana !");
+                        return;
+                    }
+                    Mana.setMana(e.getPlayer(),(Mana.getMana(e.getPlayer()) - 20));
                     Location p_loc = e.getPlayer().getLocation();
                     e.getPlayer().getWorld().playSound(p_loc, Sound.ITEM_FIRECHARGE_USE, (float) 1.0, (float) 1.0);
                     e.getPlayer().launchProjectile(Fireball.class);
-                    e.getPlayer().getWorld().spawnParticle(Particle.FIREWORKS_SPARK, p_loc,250,0.0,0.0,0.0,0.125);
+                    e.getPlayer().getWorld().spawnParticle(Particle.FLAME, p_loc,250,0.0,0.0,0.0,0.125);
 
 
                 } else if (sp == Spell.FLY) { //--------------------------------------sort Gli.. HUM, fly pardon  hehe boi
+                    if (Mana.getMana(e.getPlayer()) < 20) {
+                        e.getPlayer().sendMessage("§cPas assez de mana !");
+                        return;
+                    }
                     if (e.getPlayer().hasMetadata("glide")) {
                         e.getPlayer().sendMessage("Tu voles déja!");
                     } else {
+                        Mana.setMana(e.getPlayer(),(Mana.getMana(e.getPlayer()) - 20));
                         e.getPlayer().setMetadata("glide", new FixedMetadataValue(Main.main, true));
                         Location p_loc = e.getPlayer().getLocation();
                         e.getPlayer().getWorld().playSound(p_loc, Sound.ENTITY_BAT_TAKEOFF, (float) 1.0, (float) 1.5);
@@ -133,6 +145,10 @@ public class SpellListeners implements Listener {
 
 
                 } else if (sp == Spell.FROZE) { //-------------------------------------sort Froze (W.I.P)
+                    if (Mana.getMana(e.getPlayer()) < 20) {
+                        e.getPlayer().sendMessage("§cPas assez de mana !");
+                        return;
+                    }
                     Location p_loc = e.getPlayer().getLocation();
                     Entity target = e.getPlayer().getTargetEntity(6);
                     if (target instanceof Player) {
@@ -140,17 +156,24 @@ public class SpellListeners implements Listener {
                         ((Player) target).addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 100, 250));
                         ((Player) target).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 255));
                         e.getPlayer().getWorld().playSound(p_loc, Sound.BLOCK_GLASS_BREAK, (float) 1.0, (float) 1.0);
+                        Mana.setMana(e.getPlayer(),(Mana.getMana(e.getPlayer()) - 20));
                     } else {
                         e.getPlayer().sendMessage("§cVise un joueur espèce de bigleux");
                     }
 
 
                 } else if (sp == Spell.METEOR) { //----------------------------------sort Meteor (W.I.P)
+                    if (Mana.getMana(e.getPlayer()) < 20) {
+                        e.getPlayer().sendMessage("§cPas assez de mana !");
+                        return;
+                    }
+
                     Block b = p.getTargetBlock(50);
                     if (b == null || b.getType() == Material.AIR) {
                         p.sendMessage("§cRegarde un bloc");
                         return;
                     }
+                    Mana.setMana(e.getPlayer(),(Mana.getMana(e.getPlayer()) - 20));
                     Location targetLoc = b.getLocation();
 
                     Location pLoc = p.getLocation();
@@ -162,10 +185,15 @@ public class SpellListeners implements Listener {
                     fb.setDirection(goto_target);
 
                 } else if (sp == Spell.SPEED) { //----------------------------------------Spell speed
+                    if (Mana.getMana(e.getPlayer()) < 20) {
+                        e.getPlayer().sendMessage("§cPas assez de mana !");
+                        return;
+                    }
                     if(e.getPlayer().hasPotionEffect(PotionEffectType.SPEED)){
                         e.getPlayer().sendMessage("Tu as déjà un effet de speed !");
                     }else{
                         e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 5));
+                        Mana.setMana(e.getPlayer(),(Mana.getMana(e.getPlayer()) - 20));
                     }
                 }
             }
