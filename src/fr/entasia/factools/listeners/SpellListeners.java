@@ -2,6 +2,7 @@ package fr.entasia.factools.listeners;
 
 import fr.entasia.apis.utils.ItemUtils;
 import fr.entasia.factools.Main;
+import fr.entasia.factools.Utils;
 import fr.entasia.factools.utils.Mana;
 import fr.entasia.factools.utils.Spell;
 import org.bukkit.Location;
@@ -11,14 +12,15 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
+import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -31,12 +33,14 @@ public class SpellListeners implements Listener {
 
 
     @EventHandler
-    public void doesPlayerHaveTheWAND(PlayerSwapHandItemsEvent e) {
-        if (ItemUtils.is(e.getPlayer().getActiveItem(), Material.STICK,"§5Baguette Magique")) {
-
-            e.getPlayer().sendActionBar(String.format("Spell: %s | Mana: %s",Spell.getCurrentSpell(e.getPlayer()),Mana.getMana(e.getPlayer())));
+    public void doesPlayerHaveTheWAND(PlayerItemHeldEvent e) {
+        int slotid = e.getPreviousSlot();
+        ItemStack item = e.getPlayer().getInventory().getItem(slotid);
+        if (ItemUtils.is(item, Material.STICK, "§5Baguette Magique")) {
+            if (Spell.getCurrentSpell(e.getPlayer()) == null) return;
+            String hudText = "Mana : "+Mana.getMana(e.getPlayer())+" | Spell : "+Spell.getCurrentSpell(e.getPlayer()).name();
+            e.getPlayer().sendActionBar(hudText);
         }
-
     }
 
 
@@ -72,7 +76,7 @@ public class SpellListeners implements Listener {
                 if (sp == null) nextspell = 0;
                 else {
                     nextspell = sp.id + 1;
-                    if (nextspell == 6) nextspell = 0;
+                    if (nextspell == 7) nextspell = 0;
                 }
                 Spell.setCurrentSpell(e.getPlayer(), nextspell);
                 e.getPlayer().sendActionBar(String.format("Spell : %s", Spell.getCurrentSpell(e.getPlayer())));
@@ -195,6 +199,24 @@ public class SpellListeners implements Listener {
                         e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 5));
                         Mana.setMana(e.getPlayer(),(Mana.getMana(e.getPlayer()) - 20));
                     }
+                } else if (sp == Spell.ZEUS) {
+                    if (Mana.getMana(e.getPlayer()) < 50) {
+                        e.getPlayer().sendMessage("§cPas assez de mana !");
+                        return;
+                    }
+                    Mana.setMana(e.getPlayer(),(Mana.getMana(e.getPlayer()) - 50));
+                    Block b = p.getTargetBlock(50);
+                    e.getPlayer().getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME,b.getLocation(), 10000, 0,0,0,0.25);
+                    e.getPlayer().getWorld().spawnParticle(Particle.END_ROD,b.getLocation(), 10000, 0,0,0,0.50);
+                    e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.ENTITY_EVOKER_PREPARE_ATTACK, (float) 1.0, (float) 0.975);
+                    e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.ENTITY_EVOKER_PREPARE_ATTACK, (float) 1.0, (float) 0.975);
+                    new BukkitRunnable() {
+                        public void run() {
+                            for (int i =0; i<10; i++) {
+                                LightningStrike zeusStrike = p.getWorld().strikeLightning(b.getLocation().add(Utils.getRandom(-7, 7), 0, Utils.getRandom(-7, 7)));
+                            }
+                        }
+                    }.runTaskLater(Main.main, 50);
                 }
             }
         }

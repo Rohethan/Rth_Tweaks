@@ -15,7 +15,8 @@ public enum Spell {
   METEOR(2),
   FROZE(3),
   FIREBALL(4),
-  SPEED(5);
+  SPEED(5),
+  ZEUS(6);
 
   public int id;
 
@@ -44,7 +45,7 @@ public enum Spell {
   public static void setCurrentSpell(Player p, int id) {
     p.removeMetadata("spell", Main.main);
     p.setMetadata("spell", new FixedMetadataValue(Main.main, id));
-    p.getWorld().playSound(p.getLocation(), Sound.UI_TOAST_IN, 1, (float) 1.5);
+    p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ILLUSIONER_CAST_SPELL, 1, (float) 1.5);
     p.getWorld().spawnParticle(Particle.SOUL, p.getLocation(), 100, 0.0, 0.0, 0.0, 0.025);
   }
 
