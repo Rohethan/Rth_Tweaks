@@ -12,11 +12,10 @@ import java.util.List;
 public enum Spell {
   HEAL(0),
   FLY(1),
-  METEOR(2),
-  FROZE(3),
-  FIREBALL(4),
-  SPEED(5),
-  ZEUS(6);
+  FROZE(2),
+  FIREBALL(3),
+  SPEED(4),
+  ZEUS(5);
 
   public int id;
 

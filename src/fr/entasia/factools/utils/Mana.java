@@ -18,7 +18,6 @@ public class Mana {
     }
     public static int getMana(Player p) {
         List<MetadataValue> list = p.getMetadata("mana");
-        System.out.println(list);
         if (list.size() == 0) return 0;
         int mana_p = list.get(0).asInt();
         return mana_p;

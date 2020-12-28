@@ -1,11 +1,13 @@
 package fr.entasia.factools;
 
 import fr.entasia.factools.cmd.GiveWandCMD;
+import fr.entasia.factools.cmd.LastCMD;
 import fr.entasia.factools.cmd.ManaCMD;
 import fr.entasia.factools.cmd.SpellSelectCMD;
-import fr.entasia.factools.listeners.ManaGainListeners;
-import fr.entasia.factools.listeners.SpellListeners;
+import fr.entasia.factools.listeners.MagicListeners;
+import fr.entasia.factools.others.ManaHUD;
 import fr.entasia.factools.utils.Mana;
+import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Random;
@@ -24,15 +26,16 @@ public class Main extends JavaPlugin {
             main.reloadConfig();
             loadConfig();
 
-            getLogger().info("Activation du plugin...");
+            getLogger().info("---Factools Loading--- : Listeners");
+            getServer().getPluginManager().registerEvents(new MagicListeners(), this);
 
-            getLogger().info("Activation des spells");
-            getServer().getPluginManager().registerEvents(new SpellListeners(), this);
-            getServer().getPluginManager().registerEvents(new ManaGainListeners(), this);
+            getLogger().info("---Factools Loading--- : Commannds");
             getCommand("spell").setExecutor(new SpellSelectCMD());
             getCommand("givewand").setExecutor(new GiveWandCMD());
             getCommand("mana").setExecutor(new ManaCMD());
-
+            getCommand("last").setExecutor(new LastCMD());
+            getLogger().info("---Factools Loading--- : Async tasks");
+            new ManaHUD().runTaskTimerAsynchronously(this, 0, 20*2);
             getLogger().info("Plugin FacTools activé !");
         }catch(Throwable t){
             t.printStackTrace();
