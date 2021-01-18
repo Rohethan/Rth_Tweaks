@@ -21,6 +21,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.material.MaterialData;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -194,7 +195,9 @@ public class MagicListeners implements Listener {
                             public void run() {
                                 for (int i = 0; i < 64; i++) {
                                     Location strike = b.getLocation().add(Utils.getRandom(-8, 8), 0, Utils.getRandom(-8, 8));
+                                    p.getWorld().spawnFallingBlock(strike, b.getBlockData());
                                     p.getWorld().strikeLightning(strike);
+                                    p.getWorld().createExplosion(strike, (float) 1.0,true);
 
                                 }
                             }
