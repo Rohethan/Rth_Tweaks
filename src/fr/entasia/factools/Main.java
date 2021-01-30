@@ -4,6 +4,7 @@ import fr.entasia.factools.cmd.GiveWandCMD;
 import fr.entasia.factools.cmd.ManaCMD;
 import fr.entasia.factools.cmd.SpellSelectCMD;
 import fr.entasia.factools.listeners.MagicListeners;
+import fr.entasia.factools.listeners.QualityCraftingListeners;
 import fr.entasia.factools.others.ManaHUD;
 import fr.entasia.factools.utils.Mana;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,6 +27,7 @@ public class Main extends JavaPlugin {
 
             getLogger().info("---Factools Loading--- : Listeners");
             getServer().getPluginManager().registerEvents(new MagicListeners(), this);
+            getServer().getPluginManager().registerEvents(new QualityCraftingListeners(), this);
 
             getLogger().info("---Factools Loading--- : Commannds");
             getCommand("spell").setExecutor(new SpellSelectCMD());

@@ -21,7 +21,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.material.MaterialData;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -184,13 +183,14 @@ public class MagicListeners implements Listener {
                     }
                     Block b = p.getTargetBlock(50);
                     //if (b.getType() == null) return;
+                    assert b != null;
                     if (b.getType() == Material.AIR) {
                         p.sendMessage("Vise un block !");
                     } else {
                         p.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, b.getLocation(), 10000, 0, 0, 0, 0.25);
                         p.getWorld().spawnParticle(Particle.END_ROD, b.getLocation(), 10000, 0, 0, 0, 0.50);
-                        p.getWorld().playSound(e.getPlayer().getLocation(), Sound.ENTITY_EVOKER_PREPARE_ATTACK, (float) 1.0, (float) 0.975);
-                        p.getWorld().playSound(e.getPlayer().getLocation(), Sound.ENTITY_EVOKER_PREPARE_ATTACK, (float) 1.0, (float) 0.975);
+                        p.getWorld().playSound(p.getLocation(), Sound.ENTITY_EVOKER_PREPARE_ATTACK, (float) 1.0, (float) 0.975);
+                        p.getWorld().playSound(p.getLocation(), Sound.ENTITY_EVOKER_PREPARE_ATTACK, (float) 1.0, (float) 0.975);
                         new BukkitRunnable() {
                             public void run() {
                                 for (int i = 0; i < 64; i++) {
