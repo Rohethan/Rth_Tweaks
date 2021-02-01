@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
@@ -24,15 +25,15 @@ public class QualityCraftingListeners implements Listener {
         ItemStack craftResult = e.getRecipe().getResult();
         if (craftOutput == null) return;
         if (craftOutput.getType().toString().endsWith("SWORD")){
-            if (e.getClick().isShiftClick())
-                e.getResult()
-
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     ItemStack hey = new ItemBuilder(craftOutput).fakeEnchant().build();
-                    AttributeModifier mod = new AttributeModifier(UUID.randomUUID(), "spood", 5.0, AttributeModifier.Operation.MULTIPLY_SCALAR_1);
-                    hey.getItemMeta().addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, mod);
+                    AttributeModifier mod = new AttributeModifier(UUID.randomUUID(), "spood", 500.0, AttributeModifier.Operation.ADD_NUMBER,EquipmentSlot.HAND);
+                    ItemMeta meta = hey.getItemMeta();
+                    meta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, mod);
+                    hey.setItemMeta(meta);
+
                     e.getView().setCursor(hey);
                 }
             }.runTaskLater(Main.main, 1);
