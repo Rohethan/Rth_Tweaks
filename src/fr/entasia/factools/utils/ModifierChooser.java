@@ -1,6 +1,5 @@
 package fr.entasia.factools.utils;
 
-import com.google.common.collect.Multimap;
 import fr.entasia.factools.Utils;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -35,8 +34,7 @@ public class ModifierChooser {
      */
     public static ItemMeta modsSword(ItemMeta meta) {
         AttributeModifier mod = new AttributeModifier(UUID.randomUUID(), "come here narcos", 0.5, AttributeModifier.Operation.MULTIPLY_SCALAR_1, EquipmentSlot.HAND);
-        ItemMeta help = (ItemMeta) meta.getAttributeModifiers();
-        int index = Utils.getRandom(3,8);
+        int index = (int) Utils.getRandom(3,8);
         if (index == 4) {index = 5;}
         System.out.println(index);
         System.out.println(Attribute.values()[index]);
@@ -46,10 +44,24 @@ public class ModifierChooser {
         return meta;
     }
 
-    public static Multimap<Attribute, AttributeModifier> modsChestplate(Multimap<Attribute, AttributeModifier> activemods) {
+    public static ItemMeta modsArmor(ItemMeta meta, EquipmentSlot slot) {
+        //the "good mods" selection process
+        AttributeModifier gmod = new AttributeModifier(UUID.randomUUID(), "gud mod", Utils.getRandom(0.1, 1.1), AttributeModifier.Operation.ADD_NUMBER, slot);
+        int index4good = (int) Utils.getRandom(0, 10);
+        if (index4good == 4) { index4good = 0; }
+        System.out.println(Attribute.values()[index4good]);//DEBUG
+        meta.addAttributeModifier(Attribute.values()[index4good], gmod);
+
+        //the "bad mods" selection process
+        AttributeModifier bmod = new AttributeModifier(UUID.randomUUID(), "bad mod", Utils.getRandom(-0.1, -1.1), AttributeModifier.Operation.ADD_NUMBER, slot);
+        int index4bad = (int) Utils.getRandom(0, 10);
+        if (index4bad == 4) { index4bad = 0; }
+        System.out.println(Attribute.values()[index4bad]); //DEBUG
+        meta.addAttributeModifier(Attribute.values()[index4bad], bmod);
 
 
-        return activemods;
+
+        return meta;
     }
 
 
