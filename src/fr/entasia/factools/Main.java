@@ -33,8 +33,6 @@ public class Main extends JavaPlugin {
             getCommand("spell").setExecutor(new SpellSelectCMD());
             getCommand("givewand").setExecutor(new GiveWandCMD());
             getCommand("mana").setExecutor(new ManaCMD());
-            getLogger().info("---Factools Loading--- : Async tasks");
-            new ManaHUD().runTaskTimerAsynchronously(this, 0, 20*2);
             getLogger().info("Plugin FacTools activé !");
         }catch(Throwable t){
             t.printStackTrace();

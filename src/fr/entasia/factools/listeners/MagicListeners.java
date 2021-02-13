@@ -3,6 +3,7 @@ package fr.entasia.factools.listeners;
 import fr.entasia.apis.utils.ItemUtils;
 import fr.entasia.factools.Main;
 import fr.entasia.factools.Utils;
+import fr.entasia.factools.others.ManaHUD;
 import fr.entasia.factools.utils.Mana;
 import fr.entasia.factools.utils.Spell;
 import org.bukkit.Location;
@@ -20,6 +21,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
@@ -29,20 +31,15 @@ import org.bukkit.util.Vector;
 
 public class MagicListeners implements Listener {
 
-/* Obsolète, replacé par affichage constant  ### REMPLACEMENT STILL WIP
     @EventHandler
-    public void doesPlayerHaveTheWAND(PlayerItemHeldEvent e) {
-        System.out.println(e.getNewSlot());
-        System.out.println(e.getPreviousSlot());
-        int slotid = e.getNewSlot();
-        ItemStack item = e.getPlayer().getInventory().getItem(slotid);
-        if (ItemUtils.is(item, Material.STICK, "§5Baguette Magique")) {
-            if (Spell.getCurrentSpell(e.getPlayer()) == null) return;
-            String hudText = "Mana : "+Mana.getMana(e.getPlayer())+" | Spell : "+Spell.getCurrentSpell(e.getPlayer()).name();
-            e.getPlayer().sendActionBar(hudText);
+    public void onSwitch(PlayerItemHeldEvent e) {
+        int slot = e.getNewSlot();
+        if (ItemUtils.is(e.getPlayer().getInventory().getItem(slot), Material.STICK, "§5Baguette Magique")) {
+            ManaHUD.send(e.getPlayer());
         }
+
     }
-*/
+
     @EventHandler
     public void ManaGainThroughKill(EntityDeathEvent e) {
         LivingEntity killedEntity = e.getEntity();
@@ -78,7 +75,7 @@ public class MagicListeners implements Listener {
                     if (nextspell == 6) nextspell = 0;
                 }
                 Spell.setCurrentSpell(e.getPlayer(), nextspell);
-                e.getPlayer().sendActionBar(String.format("Spell : %s", Spell.getCurrentSpell(e.getPlayer())));
+                ManaHUD.send(e.getPlayer(), Spell.getCurrentSpell(e.getPlayer()));
             } else {
                 Player p = e.getPlayer();
                 Spell sp = Spell.getCurrentSpell(p);
