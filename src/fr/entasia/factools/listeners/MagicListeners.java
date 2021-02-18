@@ -29,6 +29,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.Objects;
+
 public class MagicListeners implements Listener {
 
     @EventHandler
@@ -75,7 +77,7 @@ public class MagicListeners implements Listener {
                     if (nextspell == 6) nextspell = 0;
                 }
                 Spell.setCurrentSpell(e.getPlayer(), nextspell);
-                ManaHUD.send(e.getPlayer(), Spell.getCurrentSpell(e.getPlayer()));
+                ManaHUD.send(e.getPlayer(), Objects.requireNonNull(Spell.getCurrentSpell(e.getPlayer())));
             } else {
                 Player p = e.getPlayer();
                 Spell sp = Spell.getCurrentSpell(p);

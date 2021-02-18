@@ -1,4 +1,2 @@
-# this is the default config
-mana_gain: 10
+mana_gain: 15
 mana_limit: 500
-
