@@ -46,7 +46,7 @@ public class ModifierChooser {
 
     public static ItemMeta modsArmor(ItemMeta meta, EquipmentSlot slot) {
         double minmod = 0;
-        double maxmod = 0;
+        double maxmod = 0.15;
         //the "good mods" selection process
         int index4good = (int) Utils.getRandom(0, 10);
         if (index4good == 4) { index4good = 0; }
@@ -60,7 +60,7 @@ public class ModifierChooser {
         int index4bad = (int) Utils.getRandom(0, 10);
         if (index4bad == 4) { index4bad = 0; }
         System.out.println("mauvais mods");
-        AttributeModifier bmod = new AttributeModifier(UUID.randomUUID(), "bad mod", Utils.getRandom(minmod, maxmod), AttributeModifier.Operation.MULTIPLY_SCALAR_1, slot);
+        AttributeModifier bmod = new AttributeModifier(UUID.randomUUID(), "bad mod", Utils.getRandom(-minmod, -maxmod), AttributeModifier.Operation.MULTIPLY_SCALAR_1, slot);
         System.out.println(Attribute.values()[index4bad]); //DEBUG
         meta.addAttributeModifier(Attribute.values()[index4bad], bmod);
 

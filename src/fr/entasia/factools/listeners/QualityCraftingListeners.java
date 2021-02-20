@@ -57,7 +57,7 @@ public class QualityCraftingListeners implements Listener {
             System.out.println(rollForCharisma);
             if (rollForCharisma == 3) {
                 craftOutput.setItemMeta(ModifierChooser.modsArmor(meta, slot));
-                e.getView().setCursor(craftOutput);
+
             }
         }
         if (craftOutput.getType().toString().endsWith("LEGGINGS")) {
@@ -71,7 +71,6 @@ public class QualityCraftingListeners implements Listener {
             System.out.println(rollForCharisma);
             if (rollForCharisma == 3) {
                 craftOutput.setItemMeta(ModifierChooser.modsArmor(meta, slot));
-                e.getView().setCursor(craftOutput);
             }
         }
         if (craftOutput.getType().toString().endsWith("HELMET")) {
@@ -85,7 +84,6 @@ public class QualityCraftingListeners implements Listener {
             System.out.println(rollForCharisma);
             if (rollForCharisma == 3) {
                 craftOutput.setItemMeta(ModifierChooser.modsArmor(meta, slot));
-                e.getView().setCursor(craftOutput);
             }
         }
         if (craftOutput.getType().toString().endsWith("BOOTS")) {
@@ -99,9 +97,11 @@ public class QualityCraftingListeners implements Listener {
             System.out.println(rollForCharisma);
             if (rollForCharisma == 3) {
                 craftOutput.setItemMeta(ModifierChooser.modsArmor(meta, slot));
-                e.getView().setCursor(craftOutput);
             }
         }
+        e.getClick().
+
+        e.getView().setCursor(craftOutput);
 
     }
 }
