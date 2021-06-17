@@ -1,4 +1,4 @@
-package fr.entasia.factools;
+package me.rohethan.rth_tweaks;
 
 public class Utils {
 
